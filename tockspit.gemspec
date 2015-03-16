@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'lil_ticker/version'
+require 'tockspit/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "lil_ticker"
-  spec.version       = LilTicker::VERSION
+  spec.name          = "tockspit"
+  spec.version       = Tockspit::VERSION
   spec.authors       = ["Daniel Upton"]
   spec.email         = ["daniel@floppy.co"]
   spec.summary       = %q{TODO: Write a short summary. Required.}

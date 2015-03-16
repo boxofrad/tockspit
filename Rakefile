@@ -9,7 +9,7 @@ desc "Run a development console"
 task :console do
   require "irb"
   require "irb/completion"
-  require "lil_ticker"
+  require "tockspit"
   ARGV.clear
   IRB.start
 end
