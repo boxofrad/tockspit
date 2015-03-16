@@ -1,7 +1,9 @@
 require "tockspit/version"
 require "tockspit/bad_credentials"
-require "tockspit/role"
 require "tockspit/connection"
+require "tockspit/resource"
+require "tockspit/role"
+require "tockspit/client"
 
 require "net/https"
 require "json"
