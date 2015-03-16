@@ -5,11 +5,13 @@ require "net/https"
 require "json"
 
 module Tockspit
+  USER_AGENT = "Tockspit v#{VERSION} (daniel+open-source@floppy.co)"
+
   def self.roles(email, password)
     http = Net::HTTP.new('www.tickspot.com', 443)
     http.use_ssl = true
 
-    request = Net::HTTP::Get.new('/api/v2/roles.json')
+    request = Net::HTTP::Get.new('/api/v2/roles.json', { 'User-Agent' => USER_AGENT })
     request.basic_auth(email, password)
 
     response = http.request(request)
