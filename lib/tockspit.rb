@@ -1,4 +1,6 @@
 require "tockspit/version"
+require "tockspit/bad_credentials"
+
 require "net/https"
 require "json"
 
@@ -11,6 +13,10 @@ module Tockspit
     request.basic_auth(email, password)
 
     response = http.request(request)
+
+    if response.code == '401'
+      raise BadCredentials
+    end
 
     JSON.parse(response.body).map do |json|
       Role.new(json['subscription_id'], json['company'], json['api_token'])
