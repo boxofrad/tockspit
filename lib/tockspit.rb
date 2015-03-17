@@ -1,5 +1,8 @@
 require "tockspit/version"
 require "tockspit/bad_credentials"
+require "tockspit/request_maker"
+require "tockspit/basic_authentication"
+require "tockspit/token_authentication"
 require "tockspit/connection"
 require "tockspit/resource"
 require "tockspit/role"
