@@ -18,7 +18,7 @@ module Tockspit
     private
 
     def request(klass, path)
-      request = klass.new("#{prefix}#{path}.json")
+      request = klass.new("#{prefix}#{path}.json", HEADERS)
       authentication.apply(request)
       response = http.request(request)
       raise_errors(response)
