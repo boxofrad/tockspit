@@ -36,14 +36,20 @@ module Tockspit
     let(:connection) { Connection.new(subscription_id, api_token) }
 
     describe "#clients" do
-      example "with correct credentials" do
+      def stub_page(page, file)
         stub_request(:get, "https://www.tickspot.com/#{subscription_id}/api/v2/clients.json").
-          with(headers: { "Authorization" => "Token token=#{api_token}" }).
-          to_return(body: fixture("clients.json"))
+          with(headers: { "Authorization" => "Token token=#{api_token}" }, query: { page: page }).
+          to_return(body: fixture(file))
+      end
+
+      example "with correct credentials" do
+        stub_page(1, "clients.json")
+        stub_page(2, "clients.json")
+        stub_page(3, "empty.json")
 
         clients = connection.clients
 
-        expect(clients.count).to eq 2
+        expect(clients.count).to eq 4
         expect(clients[0].archive).to eq false
         expect(clients[0].id).to eq 12
         expect(clients[0].name).to eq "The Republic"

@@ -6,6 +6,7 @@ require "tockspit/token_authentication"
 require "tockspit/connection"
 require "tockspit/resource"
 require "tockspit/role"
+require "tockspit/clients"
 require "tockspit/client"
 
 require "net/https"

@@ -11,14 +11,15 @@ module Tockspit
       @prefix         = opts.fetch(:prefix)
     end
 
-    def get(path)
-      request(Net::HTTP::Get, path)
+    def get(path, params = {})
+      request(Net::HTTP::Get, path, params)
     end
 
     private
 
-    def request(klass, path)
-      request = klass.new("#{prefix}#{path}.json", HEADERS)
+    def request(klass, path, params)
+      query = URI.encode_www_form(params)
+      request = klass.new("#{prefix}#{path}.json?#{query}", HEADERS)
       authentication.apply(request)
       response = http.request(request)
       raise_errors(response)

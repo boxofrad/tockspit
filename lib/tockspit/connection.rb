@@ -8,7 +8,8 @@ module Tockspit
     end
 
     def clients
-      request_maker.get("clients").map { |json| Client.new(json) }
+      Clients.new(request_maker)
+      # request_maker.get("clients").map { |json| Client.new(json) }
     end
 
     def self.roles(email, password)
