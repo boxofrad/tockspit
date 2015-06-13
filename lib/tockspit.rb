@@ -13,7 +13,11 @@ require "net/https"
 require "json"
 
 module Tockspit
-  def self.roles(email, password)
-    Connection.roles(email, password)
+  class << self
+    def roles(email, password)
+      Connection.roles(email, password)
+    end
+
+    alias :login :roles
   end
 end
