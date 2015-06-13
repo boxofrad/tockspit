@@ -86,6 +86,11 @@ module Tockspit
           expect(client.name).to eq "The Republic"
           expect(client.updated_at).to eq DateTime.new(2014, 9, 9, 13, 36, 20)
           expect(client.url).to eq "https://www.tickspot.com/api/v2/1/clients/12.json"
+
+          projects = client.projects
+          expect(projects.count).to eq 1
+          expect(projects.updated_at).to eq DateTime.new(2014, 9, 9, 13, 36, 20)
+          expect(projects.url).to eq 'https://www.tickspot.com/api/v2/123/clients/12/projects.json'
         end
 
         example 'a non-existing record' do
