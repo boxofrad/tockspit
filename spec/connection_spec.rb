@@ -49,11 +49,13 @@ module Tockspit
         clients = connection.clients
 
         expect(clients.count).to eq 4
-        expect(clients[0].archive).to eq false
-        expect(clients[0].id).to eq 12
-        expect(clients[0].name).to eq "The Republic"
-        expect(clients[0].updated_at).to eq DateTime.new(2014, 9, 9, 13, 36, 20)
-        expect(clients[0].url).to eq "https://www.tickspot.com/api/v2/1/clients/12.json"
+        expect(clients.first.archive).to eq false
+        expect(clients.first.id).to eq 12
+        expect(clients.first.name).to eq "The Republic"
+        expect(clients.first.updated_at).to eq DateTime.new(2014, 9, 9, 13, 36, 20)
+        expect(clients.first.url).to eq "https://www.tickspot.com/api/v2/1/clients/12.json"
+      end
+
       example "with incorrect credentials" do
         stub_page(1).to_return(status: 401, body: fixture("empty.json"))
 

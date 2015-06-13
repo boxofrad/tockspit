@@ -1,18 +1,16 @@
-require "forwardable"
-
 module Tockspit
   class Clients
+    include Enumerable
+
     attr_reader :request_maker
 
     def initialize(request_maker)
       @request_maker = request_maker
     end
 
-    extend Forwardable
-    def_delegators :to_a, :[], :count
-
-    def to_a
+    def each(&block)
       @array ||= build_array
+      @array.each(&block)
     end
 
     private
