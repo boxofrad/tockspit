@@ -1,0 +1,12 @@
+{
+    "archive": false,
+    "id": 12,
+    "name": "The Republic",
+    "projects": {
+        "count": 1,
+        "updated_at": "2014-09-09T13:36:20.000-00:00",
+        "url": "https://www.tickspot.com/api/v2/123/clients/12/projects.json"
+    },
+    "updated_at": "2014-09-09T13:36:20.000-00:00",
+    "url": "https://www.tickspot.com/api/v2/1/clients/12.json"
+}

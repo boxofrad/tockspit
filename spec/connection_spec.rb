@@ -36,32 +36,61 @@ module Tockspit
     let(:connection) { Connection.new(subscription_id, api_token) }
 
     describe "#clients" do
-      def stub_page(page)
-        stub_request(:get, "https://www.tickspot.com/#{subscription_id}/api/v2/clients.json").
-          with(headers: { "Authorization" => "Token token=#{api_token}" }, query: { page: page })
+      describe 'enumeration' do
+        def stub_page(page)
+          stub_request(:get, "https://www.tickspot.com/#{subscription_id}/api/v2/clients.json").
+            with(headers: { "Authorization" => "Token token=#{api_token}" }, query: { page: page })
+        end
+
+        example "with correct credentials" do
+          stub_page(1).to_return(body: fixture("clients.json"))
+          stub_page(2).to_return(body: fixture("clients.json"))
+          stub_page(3).to_return(body: fixture("empty.json"))
+
+          clients = connection.clients
+
+          expect(clients.count).to eq 4
+          expect(clients.first.archive).to eq false
+          expect(clients.first.id).to eq 12
+          expect(clients.first.name).to eq "The Republic"
+          expect(clients.first.updated_at).to eq DateTime.new(2014, 9, 9, 13, 36, 20)
+          expect(clients.first.url).to eq "https://www.tickspot.com/api/v2/1/clients/12.json"
+        end
+
+        example "with incorrect credentials" do
+          stub_page(1).to_return(status: 401, body: fixture("empty.json"))
+
+          expect {
+            connection.clients.first
+          }.to raise_error BadCredentials
+        end
       end
 
-      example "with correct credentials" do
-        stub_page(1).to_return(body: fixture("clients.json"))
-        stub_page(2).to_return(body: fixture("clients.json"))
-        stub_page(3).to_return(body: fixture("empty.json"))
+      describe 'find' do
+        let(:client_id) { 9001 }
 
-        clients = connection.clients
+        def stub_find
+          stub_request(:get, "https://www.tickspot.com/#{subscription_id}/api/v2/clients/#{client_id}.json").
+            with(headers: { "Authorization" => "Token token=#{api_token}" })
+        end
 
-        expect(clients.count).to eq 4
-        expect(clients.first.archive).to eq false
-        expect(clients.first.id).to eq 12
-        expect(clients.first.name).to eq "The Republic"
-        expect(clients.first.updated_at).to eq DateTime.new(2014, 9, 9, 13, 36, 20)
-        expect(clients.first.url).to eq "https://www.tickspot.com/api/v2/1/clients/12.json"
-      end
+        example 'an existing record' do
+          stub_find.to_return(body: fixture('client.json'))
 
-      example "with incorrect credentials" do
-        stub_page(1).to_return(status: 401, body: fixture("empty.json"))
+          client = connection.clients.find(client_id)
+          expect(client.id).to eq 12
+          expect(client.name).to eq "The Republic"
+          expect(client.updated_at).to eq DateTime.new(2014, 9, 9, 13, 36, 20)
+          expect(client.url).to eq "https://www.tickspot.com/api/v2/1/clients/12.json"
+        end
 
-        expect {
-          connection.clients.first
-        }.to raise_error BadCredentials
+        example 'a non-existing record' do
+          stub_find.to_return(status: 404, body: fixture('empty.json'))
+
+          expect {
+            connection.clients.find(client_id)
+          }.to raise_error RecordNotFound
+        end
       end
     end
   end

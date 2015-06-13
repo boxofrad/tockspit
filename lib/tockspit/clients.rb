@@ -13,6 +13,10 @@ module Tockspit
       @array.each(&block)
     end
 
+    def find(id)
+      Client.new request_maker.get("clients/#{id}")
+    end
+
     private
 
     def build_array

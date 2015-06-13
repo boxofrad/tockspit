@@ -1,3 +1,3 @@
 module Tockspit
-  BadCredentials = Class.new(StandardError)
+  BadCredentials = Class.new(TockspitError)
 end

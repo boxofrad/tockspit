@@ -30,6 +30,8 @@ module Tockspit
       case response.code.to_i
       when 401
         raise BadCredentials
+      when 404
+        raise RecordNotFound
       end
     end
 
