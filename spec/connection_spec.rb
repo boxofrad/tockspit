@@ -51,7 +51,7 @@ module Tockspit
           stub_page(2).to_return(body: fixture("clients.json"))
           stub_page(3).to_return(body: fixture("empty.json"))
 
-          clients = connection.clients
+          clients = connection.clients.all
 
           expect(clients.count).to eq 4
           expect(clients.first.archive).to eq false
@@ -65,7 +65,7 @@ module Tockspit
           stub_page(1).to_return(bad_credentials_response)
 
           expect {
-            connection.clients.first
+            connection.clients.all.first
           }.to raise_error BadCredentials
         end
       end
