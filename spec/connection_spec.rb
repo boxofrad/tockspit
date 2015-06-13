@@ -36,6 +36,10 @@ module Tockspit
     let(:connection) { Connection.new(subscription_id, api_token) }
 
     describe "#clients" do
+      let(:bad_credentials_response) {
+        { status: 401, body: fixture("empty.json") }
+      }
+
       describe 'enumeration' do
         def stub_page(page)
           stub_request(:get, "https://www.tickspot.com/#{subscription_id}/api/v2/clients.json").
@@ -58,7 +62,7 @@ module Tockspit
         end
 
         example "with incorrect credentials" do
-          stub_page(1).to_return(status: 401, body: fixture("empty.json"))
+          stub_page(1).to_return(bad_credentials_response)
 
           expect {
             connection.clients.first
@@ -90,6 +94,14 @@ module Tockspit
           expect {
             connection.clients.find(client_id)
           }.to raise_error RecordNotFound
+        end
+
+        example 'with bad credentials' do
+          stub_find.to_return(bad_credentials_response)
+
+          expect {
+            connection.clients.find(client_id)
+          }.to raise_error BadCredentials
         end
       end
     end
