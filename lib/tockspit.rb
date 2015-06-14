@@ -1,9 +1,5 @@
 require "tockspit/version"
-
-require "tockspit/tockspit_error"
-require "tockspit/bad_credentials"
-require "tockspit/record_not_found"
-
+require "tockspit/errors"
 require "tockspit/request_maker"
 require "tockspit/basic_authentication"
 require "tockspit/token_authentication"

@@ -109,6 +109,39 @@ module Tockspit
           }.to raise_error BadCredentials
         end
       end
+
+      describe "create" do
+        def stub_create
+          stub_request(:post, "https://www.tickspot.com/#{subscription_id}/api/v2/clients.json").
+            with(body: "{\"name\":\"The Republic\",\"archive\":false}",
+                 headers: { "Authorization" => "Token token=#{api_token}", "Content-Type" => "application/json; charset=utf-8" })
+        end
+
+        def create_client
+          connection.clients.create(name: "The Republic", archive: false)
+        end
+
+        example "with valid input" do
+          stub_create.to_return(status: 201, body: fixture("client.json"))
+          client = create_client
+          expect(client.name).to eq "The Republic"
+        end
+
+        example "with missing required parameters" do
+          stub_create.to_return(status: 400, body: "Missing Required Parameters")
+          expect { create_client }.to raise_error BadRequest
+        end
+
+        example "client already exists" do
+          stub_create.to_return(status: 422, body: fixture("errors.json"))
+          expect { create_client }.to raise_error UnprocessableEntity
+        end
+
+        example "with bad credentials" do
+          stub_create.to_return(bad_credentials_response)
+          expect { create_client }.to raise_error BadCredentials
+        end
+      end
     end
   end
 end

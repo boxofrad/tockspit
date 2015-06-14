@@ -23,5 +23,9 @@ module Tockspit
     def find(id)
       Client.new request_maker.get("clients/#{id}")
     end
+
+    def create(params)
+      Client.new request_maker.post("clients", params)
+    end
   end
 end

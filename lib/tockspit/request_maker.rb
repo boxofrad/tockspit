@@ -12,14 +12,26 @@ module Tockspit
     end
 
     def get(path, params = {})
-      request(Net::HTTP::Get, path, params)
+      query   = URI.encode_www_form(params)
+      path    = [full_path(path), query].join '?'
+      request = Net::HTTP::Get.new(path, HEADERS)
+      make_request(request)
+    end
+
+    def post(path, params = {})
+      request = Net::HTTP::Post.new(full_path(path), HEADERS)
+      request["Content-Type"] = "application/json; charset=utf-8"
+      request.body = params.to_json
+      make_request(request)
     end
 
     private
 
-    def request(klass, path, params)
-      query = URI.encode_www_form(params)
-      request = klass.new("#{prefix}#{path}.json?#{query}", HEADERS)
+    def full_path(path)
+      "#{prefix}#{path}.json"
+    end
+
+    def make_request(request)
       authentication.apply(request)
       response = http.request(request)
       raise_errors(response)
@@ -27,12 +39,16 @@ module Tockspit
     end
 
     def raise_errors(response)
-      case response.code.to_i
-      when 401
-        raise BadCredentials
-      when 404
-        raise RecordNotFound
-      end
+      error = case response.code.to_i
+              when 400      then BadRequest
+              when 401      then BadCredentials
+              when 404      then RecordNotFound
+              when 422      then UnprocessableEntity
+              when 400..499 then ClientError
+              when 500..599 then ServerError
+              end
+
+      raise error, response.body if error
     end
 
     def http
