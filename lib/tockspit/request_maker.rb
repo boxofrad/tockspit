@@ -20,8 +20,13 @@ module Tockspit
 
     def post(path, params = {})
       request = Net::HTTP::Post.new(full_path(path), HEADERS)
-      request["Content-Type"] = "application/json; charset=utf-8"
-      request.body = params.to_json
+      set_request_body(request, params)
+      make_request(request)
+    end
+
+    def put(path, params = {})
+      request = Net::HTTP::Put.new(full_path(path), HEADERS)
+      set_request_body(request, params)
       make_request(request)
     end
 
@@ -34,6 +39,11 @@ module Tockspit
 
     def full_path(path)
       "#{prefix}#{path}.json"
+    end
+
+    def set_request_body(request, params)
+      request["Content-Type"] = "application/json; charset=utf-8"
+      request.body = params.to_json
     end
 
     def make_request(request)

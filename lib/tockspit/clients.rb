@@ -31,5 +31,9 @@ module Tockspit
     def delete(id)
       request_maker.delete("clients/#{id}")
     end
+
+    def update(id, params)
+      Client.new request_maker.put("clients/#{id}", params)
+    end
   end
 end

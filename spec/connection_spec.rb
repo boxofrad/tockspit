@@ -173,6 +173,20 @@ module Tockspit
           }.to raise_error BadCredentials
         end
       end
+
+      describe "update" do
+        let(:client_id) { 9001 }
+
+        example "with valid credentials" do
+          stub_request(:put, "https://www.tickspot.com/#{subscription_id}/api/v2/clients/#{client_id}.json").
+            with(body: "{\"name\":\"The Republic\"}",
+                 headers: { "Authorization" => "Token token=#{api_token}", "Content-Type" => "application/json; charset=utf-8" }).
+            to_return(body: fixture('client.json'))
+
+            client = connection.clients.update(client_id, name: 'The Republic')
+            expect(client.name).to eq "The Republic"
+        end
+      end
     end
   end
 end
