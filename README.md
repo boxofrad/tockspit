@@ -32,12 +32,14 @@ Tockspit::Connection.new(1234, "my-api-token")
 # => #<Tockspit::Connection:0x007fdbe48730f8 @subscription_id=1234, @api_token="my-api-token">
 ```
 
-If you don't you can find out like so:
+But if you don't you could totally call `Tockspit.login` instead:
 
 ```ruby
 Tockspit.login('username', 'password')
 # => [#<Tockspit::Role:0x007f9f8a943258 @attributes={"subscription_id"=>1234, "company"=>"Dunder Mifflin", "api_token"=>"my-api-token"}>]
 ```
+
+You'll get back an array of roles (one for each company your accout has access to) so you could either stash the details for later or just call `#connection` on the role of your choosing... and you're away!
 
 ## Contributing
 
