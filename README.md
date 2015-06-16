@@ -1,6 +1,7 @@
 # Tockspit
 
 [![Build Status](https://travis-ci.org/boxofrad/tockspit.svg)](https://travis-ci.org/boxofrad/tockspit)
+[![Code Climate](https://codeclimate.com/github/boxofrad/tockspit/badges/gpa.svg)](https://codeclimate.com/github/boxofrad/tockspit)
 
 Fancy Ruby bindings for the [Tick](https://tickspot.com/) [API](https://github.com/tick/tick-api/)... a work in progress!
 
