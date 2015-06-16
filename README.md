@@ -23,6 +23,8 @@ Or install it yourself as:
 
 ## Usage
 
+Full API documentation can be found: [here](https://github.com/tick/tick-api).
+
 ### Authentication
 
 If you already know your subscription ID and API Token, create a new connection like so:
@@ -54,6 +56,20 @@ connection.clients.all
 
 As you can see this returns an [Enumerator](http://ruby-doc.org/core-2.2.0/Enumerator.html) object which you can call all the usual [Enumerable](http://ruby-doc.org/core-2.2.0/Enumerable.html) methods on (i.e. `#each`, `#map` or `#first`) and under the hood it'll deal with pagination automatically... pretty cool, no?
 
+**Getting a client:**
+
+```ruby
+connection.clients.find(client_id)
+# => #<Tockspit::Client:0x007fa6b4b7a220 @attributes={"id"=>1234, "name"=>"Dunder Mifflin", "archive"=>false, "url"=>"https://www.tickspot.com/1234/api/v2/clients/1234.json", "updated_at"=>"2015-06-16T14:54:11.000-04:00", "projects"=>{"count"=>0, "url"=>"https://www.tickspot.com/1234/api/v2/clients/1234/projects.json", "updated_at"=>nil}}>
+```
+
+Oh, I forgot to mention! Tockspit gives you nice accessors for the attributes too:
+
+```ruby
+client.name # => "Dunder Mifflin"
+client.id # => 1234
+```
+
 **Creating a client:**
 
 ```ruby
@@ -66,6 +82,8 @@ connection.clients.create(
 ```
 
 **Deleting a client:**
+
+If you love them, let them go :'(
 
 ```ruby
 connection.clients.delete(client_id)
