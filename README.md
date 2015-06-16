@@ -1,6 +1,6 @@
 # Tockspit
 
-TODO: Write a gem description
+Fancy Ruby bindings for the [Tick](https://tickspot.com/) [API](https://github.com/tick/tick-api/)... a work in progress!
 
 ## Installation
 
@@ -20,11 +20,25 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Authentication
+
+If you already know your subscription ID and API Token, create a new connection like so:
+
+```ruby
+Tockspit::Connection.new(1234, "my-api-token")
+# => #<Tockspit::Connection:0x007fdbe48730f8 @subscription_id=1234, @api_token="my-api-token">
+```
+
+If you don't you can find out like so:
+
+```ruby
+Tockspit.login('username', 'password')
+# => [#<Tockspit::Role:0x007f9f8a943258 @attributes={"subscription_id"=>1234, "company"=>"Dunder Mifflin", "api_token"=>"my-api-token"}>]
+```
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/tockspit/fork )
+1. Fork it ( https://github.com/boxofrad/tockspit/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
