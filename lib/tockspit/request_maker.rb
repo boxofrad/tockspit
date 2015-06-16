@@ -25,6 +25,11 @@ module Tockspit
       make_request(request)
     end
 
+    def delete(path)
+      request = Net::HTTP::Delete.new(full_path(path), HEADERS)
+      make_request(request)
+    end
+
     private
 
     def full_path(path)
@@ -43,6 +48,7 @@ module Tockspit
               when 400      then BadRequest
               when 401      then BadCredentials
               when 404      then RecordNotFound
+              when 406      then NotAcceptable
               when 422      then UnprocessableEntity
               when 400..499 then ClientError
               when 500..599 then ServerError

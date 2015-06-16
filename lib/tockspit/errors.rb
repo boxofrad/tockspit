@@ -3,6 +3,7 @@ module Tockspit
   BadCredentials      = Class.new TockspitError
   RecordNotFound      = Class.new TockspitError
   BadRequest          = Class.new TockspitError
+  NotAcceptable       = Class.new TockspitError
   UnprocessableEntity = Class.new TockspitError
   ClientError         = Class.new TockspitError
   ServerError         = Class.new TockspitError

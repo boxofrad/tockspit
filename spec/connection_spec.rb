@@ -142,6 +142,37 @@ module Tockspit
           expect { create_client }.to raise_error BadCredentials
         end
       end
+
+      describe "delete" do
+        let(:client_id) { 9001 }
+
+        def stub_delete
+          @delete_request = stub_request(:delete, "https://www.tickspot.com/#{subscription_id}/api/v2/clients/#{client_id}.json").
+            with(headers: { "Authorization" => "Token token=#{api_token}" })
+        end
+
+        example "with valid credentials" do
+          stub_delete.to_return(body: fixture("empty.json"))
+          connection.clients.delete(client_id)
+          expect(@delete_request).to have_been_requested
+        end
+
+        example "client has projects associated" do
+          stub_delete.to_return(status: 406, body: fixture('empty.json'))
+
+          expect {
+            connection.clients.delete(client_id)
+          }.to raise_error NotAcceptable
+        end
+
+        example "with bad credentials" do
+          stub_delete.to_return(status: 401, body: fixture('empty.json'))
+
+          expect {
+            connection.clients.delete(client_id)
+          }.to raise_error BadCredentials
+        end
+      end
     end
   end
 end
