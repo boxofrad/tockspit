@@ -41,6 +41,46 @@ Tockspit.login('username', 'password')
 
 You'll get back an array of roles (one for each company your accout has access to) so you could either stash the details for later or just call `#connection` on the role of your choosing... and you're away!
 
+### Clients
+
+Clients eh? everybody's got em... errr or something like that!
+
+**Getting a list:**
+
+```ruby
+connection.clients.all
+# => #<Enumerator: #<Enumerator::Generator:0x007fbf8a14a978>:each>
+```
+
+As you can see this returns an [Enumerator](http://ruby-doc.org/core-2.2.0/Enumerator.html) object which you can call all the usual [Enumerable](http://ruby-doc.org/core-2.2.0/Enumerable.html) methods on (i.e. `#each`, `#map` or `#first`) and under the hood it'll deal with pagination automatically... pretty cool, no?
+
+**Creating a client:**
+
+```ruby
+connection.clients.create(
+  name: "Dunder Mifflin",
+  archive: false
+)
+
+# => #<Tockspit::Client:0x007fbf8a0ef668 @attributes={"id"=>1234, "name"=>"Dunder Mifflin", "archive"=>false, "url"=>"https://www.tickspot.com/1234/api/v2/clients/1234.json", "updated_at"=>"2015-06-16T14:54:11.241-04:00"}>
+```
+
+**Deleting a client:**
+
+```ruby
+connection.clients.delete(client_id)
+```
+
+## Handling Errors
+
+All API level errors (i.e. unhappy HTTP status codes) will raise a decendent of `Tockspit::TockspitError`, popular choices include `Tockspit::BadCredentials` and `Tockspit::RecordNotFound` but there are some more exotic ones too... for a full list check out [errors.rb](lib/tockspit/errors.rb).
+
+Remember to also cater for network level errors (i.e. `Errno::ECONNRESET`).
+
+## To be continued...
+
+This is a work in progress - it's quite incomplete and I'm still trying to figure out the API design etc.
+
 ## Contributing
 
 1. Fork it ( https://github.com/boxofrad/tockspit/fork )
