@@ -11,6 +11,10 @@ module Tockspit
       Clients.new(request_maker)
     end
 
+    def projects
+      Projects.new(request_maker)
+    end
+
     def self.roles(email, password)
       request_maker = RequestMaker.new(
         prefix: '/api/v2/',
